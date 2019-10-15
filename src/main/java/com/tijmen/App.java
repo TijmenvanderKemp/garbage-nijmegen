@@ -1,13 +1,10 @@
 package com.tijmen;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        ProblemParser parser = new ProblemParser();
+        parser.parse(System.in);
     }
 }
