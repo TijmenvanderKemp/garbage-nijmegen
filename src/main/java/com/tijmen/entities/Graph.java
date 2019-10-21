@@ -45,6 +45,10 @@ public class Graph {
         return Collections.unmodifiableSet(edges);
     }
 
+    public Map<Vertex, Set<Vertex>> getAdjacencyLists() {
+        return adjacencyLists;
+    }
+
     public int numberOfVertices() {
         return vertices.size();
     }
