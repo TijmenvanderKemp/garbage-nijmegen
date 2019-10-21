@@ -27,6 +27,8 @@ public class ProblemParser {
             graph.addEdge(vertexFrom, vertexTo);
         }
 
+        graph.buildAdjacencyLists();
+
         return new Problem(graph, numberOfBins);
     }
 }

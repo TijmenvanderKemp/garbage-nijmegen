@@ -16,6 +16,7 @@ public class Algorithm {
     if (testVertexLowerBound()) {
       return true;
     }
+
     return false;
   }
 

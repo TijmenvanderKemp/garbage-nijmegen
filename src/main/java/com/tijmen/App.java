@@ -11,5 +11,7 @@ public final class App
     {
         ProblemParser parser = new ProblemParser();
         Problem problem = parser.parse(System.in);
+        Algorithm algorithm = new Algorithm(problem);
+        System.out.println(algorithm.solve());
     }
 }
