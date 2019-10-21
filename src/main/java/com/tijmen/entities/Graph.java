@@ -3,8 +3,8 @@ package com.tijmen.entities;
 import java.util.*;
 
 public class Graph {
-    private final List<Vertex> vertices = new ArrayList<>();
-    private final List<Edge> edges = new ArrayList<>();
+    private final Set<Vertex> vertices = new HashSet<>();
+    private final Set<Edge> edges = new HashSet<>();
     private final Map<Vertex, Set<Vertex>> adjacencyLists = new HashMap<>();
 
     public Graph(int numberOfVertices) {
@@ -37,12 +37,12 @@ public class Graph {
                 .orElseThrow(() -> new RuntimeException(String.format("Vertex with id %d not found: ", id)));
     }
 
-    public List<Vertex> getVertices() {
-        return Collections.unmodifiableList(vertices);
+    public Set<Vertex> getVertices() {
+        return Collections.unmodifiableSet(vertices);
     }
 
-    public List<Edge> getEdges() {
-        return Collections.unmodifiableList(edges);
+    public Set<Edge> getEdges() {
+        return Collections.unmodifiableSet(edges);
     }
 
     public int numberOfVertices() {

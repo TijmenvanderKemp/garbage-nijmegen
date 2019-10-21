@@ -17,7 +17,7 @@ public class ProblemParserTest {
     InputStream testFile = TestFile.get("sample1.txt");
     Problem problem = parser.parse(testFile);
 
-    assertThat(problem.getGraph().getVertices()).containsExactly(
+    assertThat(problem.getGraph().getVertices()).containsExactlyInAnyOrder(
         new Vertex(1),
         new Vertex(2),
         new Vertex(3),
@@ -25,7 +25,7 @@ public class ProblemParserTest {
         new Vertex(5),
         new Vertex(6),
         new Vertex(7));
-    assertThat(problem.getGraph().getEdges()).containsExactly(
+    assertThat(problem.getGraph().getEdges()).containsExactlyInAnyOrder(
         edge(1, 2),
         edge(1, 4),
         edge(2, 3),
@@ -44,7 +44,7 @@ public class ProblemParserTest {
     InputStream testFile = TestFile.get("sample2.txt");
     Problem problem = parser.parse(testFile);
 
-    assertThat(problem.getGraph().getVertices()).containsExactly(
+    assertThat(problem.getGraph().getVertices()).containsExactlyInAnyOrder(
         new Vertex(1),
         new Vertex(2),
         new Vertex(3),
@@ -53,7 +53,7 @@ public class ProblemParserTest {
         new Vertex(6),
         new Vertex(7),
         new Vertex(8));
-    assertThat(problem.getGraph().getEdges()).containsExactly(
+    assertThat(problem.getGraph().getEdges()).containsExactlyInAnyOrder(
         edge(1, 2),
         edge(1, 4),
         edge(2, 3),
