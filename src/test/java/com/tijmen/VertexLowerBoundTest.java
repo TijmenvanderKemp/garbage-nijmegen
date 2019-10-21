@@ -1,31 +1,22 @@
 package com.tijmen;
 
-import com.tijmen.entities.Problem;
 import org.junit.Test;
-
-import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class VertexLowerBoundTest {
 
+  /**
+   * If the number of bins k is less than or equal to the number of vertices v, divided by 5, rounded up,
+   * then it's automatically possible to place all bins.
+   */
   @Test
   public void twoBinsIsMoreThanFiveDividedByFiveCeilinged() {
-    ProblemParser parser = new ProblemParser();
-    InputStream testFile = TestFile.get("fiveVerticesTwoBins.txt");
-    Problem problem = parser.parse(testFile);
-    Algorithm algorithm = new Algorithm(problem);
-
-    assertThat(algorithm.solve()).isFalse();
+    assertThat(TestSolver.solve("fiveVerticesTwoBins.txt")).isFalse();
   }
 
   @Test
   public void twoBinsIsLessOrEqualThanSixDividedByFiveCeilinged() {
-    ProblemParser parser = new ProblemParser();
-    InputStream testFile = TestFile.get("sixVerticesTwoBins.txt");
-    Problem problem = parser.parse(testFile);
-    Algorithm algorithm = new Algorithm(problem);
-
-    assertThat(algorithm.solve()).isTrue();
+    assertThat(TestSolver.solve("sixVerticesTwoBins.txt")).isTrue();
   }
 }
