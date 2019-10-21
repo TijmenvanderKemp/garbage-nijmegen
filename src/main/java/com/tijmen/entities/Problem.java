@@ -1,8 +1,8 @@
 package com.tijmen.entities;
 
 public class Problem {
-    private Graph graph;
-    private int numberOfBins;
+    private final Graph graph;
+    private final int numberOfBins;
 
     public Problem(Graph graph, int numberOfBins) {
         this.graph = graph;

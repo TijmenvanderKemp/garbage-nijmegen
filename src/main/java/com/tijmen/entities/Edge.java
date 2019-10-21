@@ -3,8 +3,8 @@ package com.tijmen.entities;
 import java.util.Objects;
 
 public class Edge {
-    private Vertex v1;
-    private Vertex v2;
+    private final Vertex v1;
+    private final Vertex v2;
 
     public Edge(Vertex v1, Vertex v2) {
         this.v1 = v1;
@@ -24,8 +24,8 @@ public class Edge {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Edge edge = (Edge) o;
-        return v1.equals(edge.v1) &&
-                v2.equals(edge.v2);
+        return v1.equals(edge.getV1()) &&
+                v2.equals(edge.getV2());
     }
 
     @Override

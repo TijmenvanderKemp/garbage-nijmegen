@@ -3,7 +3,7 @@ package com.tijmen.entities;
 import java.util.Objects;
 
 public class Vertex {
-    private int id;
+    private final int id;
 
     public Vertex(int id) {
         this.id = id;
@@ -18,7 +18,7 @@ public class Vertex {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vertex vertex = (Vertex) o;
-        return id == vertex.id;
+        return id == vertex.getId();
     }
 
     @Override

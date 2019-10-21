@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class Graph {
-    List<Vertex> vertices = new ArrayList<>();
-    List<Edge> edges = new ArrayList<>();
+    private final List<Vertex> vertices = new ArrayList<>();
+    private final List<Edge> edges = new ArrayList<>();
 
     public Graph(int numberOfVertices) {
         for (int i = 1; i <= numberOfVertices; i++) {
