@@ -67,6 +67,28 @@ public class ProblemParserTest {
     assertThat(problem.getNumberOfBins()).isEqualTo(3);
   }
 
+  @Test
+  public void testEmptyGraphOneBin() {
+    ProblemParser parser = new ProblemParser();
+    InputStream testFile = TestFile.get("emptyGraphOneBin.txt");
+    Problem problem = parser.parse(testFile);
+
+    assertThat(problem.getGraph().getVertices()).isEmpty();
+    assertThat(problem.getGraph().getEdges()).isEmpty();
+    assertThat(problem.getNumberOfBins()).isEqualTo(1);
+  }
+
+  @Test
+  public void testEmptyGraphZeroBins() {
+    ProblemParser parser = new ProblemParser();
+    InputStream testFile = TestFile.get("emptyGraphZeroBins.txt");
+    Problem problem = parser.parse(testFile);
+
+    assertThat(problem.getGraph().getVertices()).isEmpty();
+    assertThat(problem.getGraph().getEdges()).isEmpty();
+    assertThat(problem.getNumberOfBins()).isEqualTo(0);
+  }
+
   private Edge edge(int v1, int v2) {
     return new Edge(new Vertex(v1), new Vertex(v2));
   }

@@ -33,4 +33,12 @@ public class Graph {
     public List<Edge> getEdges() {
         return Collections.unmodifiableList(edges);
     }
+
+    public int numberOfVertices() {
+        return vertices.size();
+    }
+
+    public int numberOfEdges() {
+        return edges.size();
+    }
 }

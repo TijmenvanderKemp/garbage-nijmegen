@@ -1,10 +1,15 @@
 package com.tijmen;
 
-public class App 
+import com.tijmen.entities.Problem;
+
+public final class App
 {
+    private App() {
+    }
+
     public static void main( String[] args )
     {
         ProblemParser parser = new ProblemParser();
-        parser.parse(System.in);
+        Problem problem = parser.parse(System.in);
     }
 }
