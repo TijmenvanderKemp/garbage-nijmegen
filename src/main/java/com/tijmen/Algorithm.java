@@ -20,6 +20,10 @@ public class Algorithm {
     return false;
   }
 
+  /**
+   * If the number of bins k is less than or equal to the number of vertices v, divided by 5, rounded up,
+   * then it's automatically possible to place all bins.
+   */
   private boolean testVertexLowerBound() {
     return numberOfBins <= Math.ceil(graph.numberOfVertices() / 5.0);
   }
