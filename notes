@@ -1,0 +1,13 @@
+als k <= v/5 klaar, het kan
+dubbele edges weghalen, dit kan in O(|E|) want je gooit ze allemaal in een (hash)set
+adjacency lists en matrix maken in O(|E|)
+bereken de gemiddelde graad, als dit d is, dan kan je altijd k <= |V| / d+1 bakken kwijt
+graad 0 en 1 dingen opvullen, dit kost O(4|V|) want opzoeken van weg te halen vertex in adj. list van buur is max. 4, aangezien elke vertex max 4 buren heeft.
+
+
+
+
+https://courses.grainger.illinois.edu/cs598csc/sp2011/Lectures/lecture_7.pdf
+Remark:
+The well-known Turan’s theorem shows via a clever argument that there is always an
+independent set of size n/(d+1) where d is the average degree of G.
