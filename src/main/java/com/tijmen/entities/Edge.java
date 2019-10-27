@@ -1,6 +1,7 @@
 package com.tijmen.entities;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class Edge {
     private final Vertex v1;
@@ -17,6 +18,16 @@ public class Edge {
 
     public Vertex getV2() {
         return v2;
+    }
+
+    public Optional<Vertex> getOtherVertex(Vertex v) {
+        if(v.equals(v1)){
+            return Optional.of(v2);
+        } else if(v.equals(v2)){
+            return Optional.of(v1);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
