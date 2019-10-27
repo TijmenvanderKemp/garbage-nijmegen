@@ -19,6 +19,10 @@ public class Graph {
         edges.add(newEdge);
     }
 
+    public void addEdge(Edge edge) {
+        edges.add(edge);
+    }
+
     public void buildAdjacencyLists() {
         for(Edge edge : edges) {
             Vertex v1 = edge.getV1();
