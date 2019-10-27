@@ -3,24 +3,32 @@ package com.tijmen.entities;
 import java.util.*;
 
 public class Graph {
-    private final Set<Vertex> vertices = new HashSet<>();
-    private final Set<Edge> edges = new HashSet<>();
+    private final Set<Vertex> vertices;
+    private final Set<Edge> edges;
     private final Map<Vertex, Set<Vertex>> adjacencyLists = new HashMap<>();
 
     public Graph(int numberOfVertices) {
+        vertices = new HashSet<>();
+        edges = new HashSet<>();
         for (int i = 1; i <= numberOfVertices; i++) {
             vertices.add(new Vertex(i));
             adjacencyLists.put(new Vertex(i), new HashSet<>());
         }
     }
 
+    public Graph(Set<Vertex> vertices, Set<Edge> edges) {
+        this.vertices = vertices;
+        this.edges = edges;
+        for (int i = 1; i <= vertices.size(); i++) {
+            vertices.add(new Vertex(i));
+            adjacencyLists.put(new Vertex(i), new HashSet<>());
+        }
+        buildAdjacencyLists();
+    }
+
     public void addEdge(int v1, int v2) {
         Edge newEdge = new Edge(getVertex(v1), getVertex(v2));
         edges.add(newEdge);
-    }
-
-    public void addEdge(Edge edge) {
-        edges.add(edge);
     }
 
     public void buildAdjacencyLists() {

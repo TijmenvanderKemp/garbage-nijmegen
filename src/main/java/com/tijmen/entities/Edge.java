@@ -30,6 +30,10 @@ public class Edge {
         }
     }
 
+    public boolean connectedTo(Vertex vertex) {
+        return vertex.equals(v1) || vertex.equals(v2);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

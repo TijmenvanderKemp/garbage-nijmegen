@@ -27,7 +27,7 @@ public class GraphHandler {
      * @param grade the requested grade
      * @return all vertices that have grade of requested grade
      */
-    public static Set<Vertex> VerticesOfGrade(Graph graph, int grade) {
+    public static Set<Vertex> verticesOfGrade(Graph graph, int grade) {
         Set<Vertex> edgesOfGrade = new HashSet<>();
         for(Map.Entry<Vertex, Set<Vertex>> adjacencyList : graph.getAdjacencyLists().entrySet()) {
             if(adjacencyList.getValue().size() == grade) {
@@ -36,21 +36,55 @@ public class GraphHandler {
         }
         return edgesOfGrade;
     }
-    /*
+
+    /**
+     * Removes all vertices and edges that contain those vertices from a graph
+     * @param graph the original graph to remove vertices from
+     * @param vertices the set of all vertices to remove
+     * @return the new graph
+     */
     public static Graph removeVerticesFromGraph(Graph graph, Set<Vertex> vertices) {
+        // subtract the set of edges to be removed
         Set<Vertex> verticesLeftOver = SetHandler.subtractSets(graph.getVertices(), vertices);
-        Graph newGraph = new Graph(verticesLeftOver.size());
-        for(Vertex vertex : verticesLeftOver) {
 
+        // each edge that contains one of the removed vertices is removed as well
+        Set<Edge> edgesLeftOver = graph.getEdges();
+        for(Vertex vertex : vertices) {
+            SetHandler.subtractSets(edgesLeftOver, edgesFromOrToVertex(edgesLeftOver, vertex));
         }
-    }*/
 
-    public static Graph makeGraphWithSetOfEdges(int numberOfVertices, Set<Edge> edges) {
-        Graph graph = new Graph(numberOfVertices);
-        for(Edge edge : edges) {
-            graph.addEdge(edge);
-        }
-        graph.buildAdjacencyLists();
-        return graph;
+        return new Graph(verticesLeftOver, edgesLeftOver);
     }
+
+    /**
+     * Finds the set of edges that are to or from vertex
+     * @param edges The list of edges in the graph
+     * @param vertex The vertex to check
+     * @return the set of edges that are to or from vertex
+     */
+    public static Set<Edge> edgesFromOrToVertex(Set<Edge> edges, Vertex vertex) {
+        Set<Edge> edgesFromOrToVertex = new HashSet<>();
+        for(Edge edge : edges) {
+            if(edge.connectedTo(vertex)) {
+                edgesFromOrToVertex.add(edge);
+            }
+        }
+        return edgesFromOrToVertex;
+    }
+
+    /**
+     * Finds the set of direct neighbours a vertex in a graph
+     * @param graph the graph
+     * @param vertex The vertex to find neighbours of
+     * @return the set of direct neighbours a vertex in a graph
+     */
+    public static Set<Vertex> VerticesDirectlyConnectedToVertex(Graph graph, Vertex vertex) {
+        Set<Vertex> vertices = new HashSet<>();
+        Set<Edge> edges = edgesFromOrToVertex(graph.getEdges(), vertex);
+        for(Edge edge : edges){
+            vertices.add(edge.getOtherVertex(vertex).get());
+        }
+        return vertices;
+    }
+
 }
