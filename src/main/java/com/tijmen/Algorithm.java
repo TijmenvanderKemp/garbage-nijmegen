@@ -92,16 +92,12 @@ public class Algorithm {
    * If the number of bins k is less than or equal to the number of vertices |V|, divided by the average grade
    * of all vertices d plus one, then it's automatically possible to place all bins.
    * (k <= |V| / (d+1))
+   * We see that for a bidirectional graph the average grade d is d = |E|/|V|
+   * We save our edges only once in memory so 2E
    */
   public boolean testAverageGradeLowerBound() {
-    OptionalDouble optionalAverage = GraphHandler.averageGrade(graph);
-    double average;
-    if(optionalAverage.isPresent()) {
-      average = optionalAverage.getAsDouble();
-    } else {
-      // if there is no average, then that must mean there are no edges at all so the average is 0.
-      average = 0;
-    }
-    return numberOfBins <= graph.numberOfVertices() / (average + 1);
+    int E = graph.numberOfEdges();
+    int V = graph.numberOfVertices();
+    return numberOfBins <= V / (E*2.0/V + 1);
   }
 }

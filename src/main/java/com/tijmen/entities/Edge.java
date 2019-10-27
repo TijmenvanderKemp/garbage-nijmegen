@@ -39,8 +39,10 @@ public class Edge {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Edge edge = (Edge) o;
-        return v1.equals(edge.getV1()) &&
-                v2.equals(edge.getV2());
+        return (v1.equals(edge.getV1()) &&
+                v2.equals(edge.getV2())) ||
+                (v1.equals(edge.getV2()) &&
+                        v2.equals(edge.getV1())) ;
     }
 
     @Override

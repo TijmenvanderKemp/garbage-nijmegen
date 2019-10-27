@@ -6,20 +6,6 @@ import java.util.OptionalDouble;
 import java.util.Set;
 
 public class GraphHandler {
-    /**
-     * The average grade of the graph is the average grade of all vertices in the graph.
-     * The grade of a vertex is the amount of edges leaving the vertex.
-     * @param graph The graph
-     * @return The average grade of the graph
-     */
-    public static OptionalDouble averageGrade(Graph graph) {
-        return graph.
-                getAdjacencyLists().
-                values().
-                stream().
-                mapToDouble(vertices -> vertices.size()).
-                average();
-    }
 
     /**
      *
@@ -50,7 +36,8 @@ public class GraphHandler {
         // each edge that contains one of the removed vertices is removed as well
         Set<Edge> edgesLeftOver = graph.getEdges();
         for(Vertex vertex : vertices) {
-            SetHandler.subtractSets(edgesLeftOver, edgesFromOrToVertex(edgesLeftOver, vertex));
+            Set<Edge> edgesFromOrToVertex = edgesFromOrToVertex(edgesLeftOver, vertex);
+            edgesLeftOver = SetHandler.subtractSets(edgesLeftOver, edgesFromOrToVertex);
         }
 
         return new Graph(verticesLeftOver, edgesLeftOver);

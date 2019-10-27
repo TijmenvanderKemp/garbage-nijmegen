@@ -12,17 +12,12 @@ public class Graph {
         edges = new HashSet<>();
         for (int i = 1; i <= numberOfVertices; i++) {
             vertices.add(new Vertex(i));
-            adjacencyLists.put(new Vertex(i), new HashSet<>());
         }
     }
 
     public Graph(Set<Vertex> vertices, Set<Edge> edges) {
         this.vertices = vertices;
         this.edges = edges;
-        for (int i = 1; i <= vertices.size(); i++) {
-            vertices.add(new Vertex(i));
-            adjacencyLists.put(new Vertex(i), new HashSet<>());
-        }
         buildAdjacencyLists();
     }
 
@@ -32,13 +27,16 @@ public class Graph {
     }
 
     public void buildAdjacencyLists() {
+        for (int i = 1; i <= vertices.size(); i++) {
+            adjacencyLists.put(new Vertex(i), new HashSet<>());
+        }
         for(Edge edge : edges) {
             Vertex v1 = edge.getV1();
             Vertex v2 = edge.getV2();
             Set<Vertex> verticesV1 = adjacencyLists.get(v1);
             verticesV1.add(v2);
             Set<Vertex> verticesV2 = adjacencyLists.get(v2);
-            verticesV2.add(v2);
+            verticesV2.add(v1);
         }
     }
 
@@ -67,5 +65,13 @@ public class Graph {
 
     public int numberOfEdges() {
         return edges.size();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Graph graph = (Graph) o;
+        return vertices.equals(graph.getVertices()) && edges.equals(graph.getEdges());
     }
 }
