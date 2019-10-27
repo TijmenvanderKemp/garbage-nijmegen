@@ -15,4 +15,11 @@ public final class TestSolver {
     Algorithm algorithm = new Algorithm(problem);
     return algorithm.solve();
   }
+
+  public static Algorithm algorithm(String file) {
+    ProblemParser parser = new ProblemParser();
+    InputStream testFile = TestFile.get(file);
+    Problem problem = parser.parse(testFile);
+    return new Algorithm(problem);
+  }
 }

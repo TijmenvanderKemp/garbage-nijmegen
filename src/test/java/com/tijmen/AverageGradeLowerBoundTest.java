@@ -13,11 +13,11 @@ public class AverageGradeLowerBoundTest {
      */
     @Test
     public void twoBinsIsMoreThanFourDividedByFour() {
-        assertThat(TestSolver.solve("averageGradeThreeFourVerticesTwoBins.txt")).isFalse();
+        assertThat(TestSolver.algorithm("averageGradeThreeFourVerticesTwoBins.txt").testAverageGradeLowerBound()).isFalse();
     }
 
     @Test
     public void oneBinIsLessOrEqualThanFourDividedByFour() {
-        assertThat(TestSolver.solve("averageGradeThreeFourVerticesOneBin.txt")).isTrue();
+        assertThat(TestSolver.algorithm("averageGradeThreeFourVerticesOneBin.txt").testAverageGradeLowerBound()).isTrue();
     }
 }

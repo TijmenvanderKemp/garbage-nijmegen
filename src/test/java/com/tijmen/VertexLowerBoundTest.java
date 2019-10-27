@@ -12,11 +12,11 @@ public class VertexLowerBoundTest {
    */
   @Test
   public void twoBinsIsMoreThanFiveDividedByFiveCeilinged() {
-    assertThat(TestSolver.solve("fiveVerticesTwoBins.txt")).isFalse();
+    assertThat(TestSolver.algorithm("fiveVerticesTwoBins.txt").testVertexLowerBound()).isFalse();
   }
 
   @Test
   public void twoBinsIsLessOrEqualThanSixDividedByFiveCeilinged() {
-    assertThat(TestSolver.solve("sixVerticesTwoBins.txt")).isTrue();
+    assertThat(TestSolver.algorithm("sixVerticesTwoBins.txt").testVertexLowerBound()).isTrue();
   }
 }
