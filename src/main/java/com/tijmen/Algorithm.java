@@ -67,7 +67,7 @@ class Algorithm {
             if (algorithm.solve()) {
                 return true;
             } else {
-                subGraphs.put(subGraph, numberOfBins);
+                subGraphs.put(subGraph, numberOfBins-1);
             }
 
         }
@@ -79,8 +79,6 @@ class Algorithm {
     private boolean HasBeenChecked() {
         // If we encountered this sub graph before, its not possible.
         if (subGraphs.containsKey(graph)) {
-            System.out.println(numberOfBins + ", " + subGraphs.get(graph) + "\n" +
-                    graph);
             if (numberOfBins >= subGraphs.get(graph)) {
                 return true;
             }

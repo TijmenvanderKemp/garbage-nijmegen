@@ -25,9 +25,7 @@ public class AlgorithmTest {
         List<Pair<File, File>> insAndOuts = zip(inFiles, outFiles);
 
         for (Pair<File, File> inAndOut : insAndOuts) {
-            if (!inAndOut.getLeft().getName().startsWith("big")) {
-                test(inAndOut);
-            }
+            test(inAndOut);
         }
     }
 
