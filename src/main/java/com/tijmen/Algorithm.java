@@ -20,12 +20,23 @@ class Algorithm {
 
     boolean solve() {
 
+        if (numberOfBins <= 0) {
+            return true;
+        }
+        // If there is no more space left, its not possible
+        if (graph.getVertices().isEmpty()) {
+            return false;
+        }
+
         if (testVertexLowerBound()) {
             return true;
         }
         if (testAverageGradeLowerBound()) {
             return true;
         }
+
+        // If we encountered this sub graph before, its not possible.
+        if (HasBeenChecked()) return false;
 
         // Every vertex with 0 edges can support a bin.
         fillAllGradeZeroVertices();
@@ -37,19 +48,10 @@ class Algorithm {
         if (numberOfBins <= 0) {
             return true;
         }
-
-        // If there is no more space left, its not possible
-        Set<Vertex> vertices = graph.getVertices();
-        if (vertices.isEmpty()) {
+        if (graph.getVertices().isEmpty()) {
             return false;
         }
-
-        // If we encountered this sub graph before, its not possible.
-        if (subGraphs.containsKey(graph)) {
-            if(numberOfBins >= subGraphs.get(graph)) {
-                return false;
-            }
-        }
+        if (HasBeenChecked()) return false;
 
         Vertex vertex = graph.getVertexWithMinimalGrade();
 
@@ -72,6 +74,18 @@ class Algorithm {
 
         return false;
 
+    }
+
+    private boolean HasBeenChecked() {
+        // If we encountered this sub graph before, its not possible.
+        if (subGraphs.containsKey(graph)) {
+            System.out.println(numberOfBins + ", " + subGraphs.get(graph) + "\n" +
+                    graph);
+            if (numberOfBins >= subGraphs.get(graph)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
