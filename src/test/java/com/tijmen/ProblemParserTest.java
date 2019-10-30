@@ -14,7 +14,7 @@ public class ProblemParserTest {
   @Test
   public void testSample1() {
     ProblemParser parser = new ProblemParser();
-    InputStream testFile = TestFile.get("sample1.txt");
+    InputStream testFile = TestFile.getAsStream("sample1.txt");
     Problem problem = parser.parse(testFile);
 
     assertThat(problem.getGraph().getVertices()).containsExactlyInAnyOrder(
@@ -41,7 +41,7 @@ public class ProblemParserTest {
   @Test
   public void testSample2() {
     ProblemParser parser = new ProblemParser();
-    InputStream testFile = TestFile.get("sample2.txt");
+    InputStream testFile = TestFile.getAsStream("sample2.txt");
     Problem problem = parser.parse(testFile);
 
     assertThat(problem.getGraph().getVertices()).containsExactlyInAnyOrder(
@@ -70,7 +70,7 @@ public class ProblemParserTest {
   @Test
   public void testEmptyGraphOneBin() {
     ProblemParser parser = new ProblemParser();
-    InputStream testFile = TestFile.get("emptyGraphOneBin.txt");
+    InputStream testFile = TestFile.getAsStream("emptyGraphOneBin.txt");
     Problem problem = parser.parse(testFile);
 
     assertThat(problem.getGraph().getVertices()).isEmpty();
@@ -81,7 +81,7 @@ public class ProblemParserTest {
   @Test
   public void testEmptyGraphZeroBins() {
     ProblemParser parser = new ProblemParser();
-    InputStream testFile = TestFile.get("emptyGraphZeroBins.txt");
+    InputStream testFile = TestFile.getAsStream("emptyGraphZeroBins.txt");
     Problem problem = parser.parse(testFile);
 
     assertThat(problem.getGraph().getVertices()).isEmpty();

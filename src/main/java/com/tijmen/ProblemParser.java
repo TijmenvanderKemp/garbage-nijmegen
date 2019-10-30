@@ -19,16 +19,20 @@ public class ProblemParser {
         Graph graph = new Graph(numberOfVertices);
 
         for (int i = 0; i < numberOfEdges; i++) {
-            String edgeAsString = in.nextLine();
-            String[] verticesFromAndTo = edgeAsString.split(" ");
-            int vertexFrom = Integer.parseInt(verticesFromAndTo[0]);
-            int vertexTo = Integer.parseInt(verticesFromAndTo[1]);
-
-            graph.addEdge(vertexFrom, vertexTo);
+            parseEdge(in, graph);
         }
 
         graph.buildAdjacencyLists();
 
         return new Problem(graph, numberOfBins);
+    }
+
+    private void parseEdge(Scanner in, Graph graph) {
+        String edgeAsString = in.nextLine();
+        String[] verticesFromAndTo = edgeAsString.split(" ");
+        int vertexFrom = Integer.parseInt(verticesFromAndTo[0]);
+        int vertexTo = Integer.parseInt(verticesFromAndTo[1]);
+
+        graph.addEdge(vertexFrom, vertexTo);
     }
 }
