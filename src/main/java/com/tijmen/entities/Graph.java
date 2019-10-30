@@ -26,6 +26,10 @@ public class Graph {
         edges.add(newEdge);
     }
 
+    public void addEdge(Edge edge) {
+        edges.add(edge);
+    }
+
     public void buildAdjacencyLists() {
         for (Vertex vertex : vertices) {
             adjacencyLists.put(vertex, new HashSet<>());
@@ -89,5 +93,13 @@ public class Graph {
     @Override
     public int hashCode() {
         return Objects.hash(vertices, edges);
+    }
+
+    @Override
+    public String toString() {
+        return "\nGraph{" +
+                "\nvertices=" + vertices +
+                ", \nedges=" + edges +
+                '}';
     }
 }

@@ -10,9 +10,9 @@ import java.util.*;
 class Algorithm {
     private int numberOfBins;
     private Graph graph;
-    private HashSet<Graph> subGraphs;
+    private HashMap<Graph, Integer> subGraphs;
 
-    Algorithm(Problem problem, HashSet<Graph> subGraphs) {
+    Algorithm(Problem problem, HashMap<Graph, Integer> subGraphs) {
         numberOfBins = problem.getNumberOfBins();
         graph = problem.getGraph();
         this.subGraphs = subGraphs;
@@ -45,8 +45,10 @@ class Algorithm {
         }
 
         // If we encountered this sub graph before, its not possible.
-        if (subGraphs.contains(graph)) {
-            return false;
+        if (subGraphs.containsKey(graph)) {
+            if(numberOfBins >= subGraphs.get(graph)) {
+                return false;
+            }
         }
 
         Vertex vertex = graph.getVertexWithMinimalGrade();
@@ -63,7 +65,7 @@ class Algorithm {
             if (algorithm.solve()) {
                 return true;
             } else {
-                subGraphs.add(subGraph);
+                subGraphs.put(subGraph, numberOfBins);
             }
 
         }
@@ -128,5 +130,9 @@ class Algorithm {
         int E = graph.numberOfEdges();
         int V = graph.numberOfVertices();
         return numberOfBins <= V / (E * 2.0 / V + 1);
+    }
+
+    public HashMap<Graph, Integer> getSubGraphs() {
+        return subGraphs;
     }
 }

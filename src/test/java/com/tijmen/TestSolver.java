@@ -4,6 +4,7 @@ import com.tijmen.entities.Graph;
 import com.tijmen.entities.Problem;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public final class TestSolver {
@@ -14,7 +15,7 @@ public final class TestSolver {
     ProblemParser parser = new ProblemParser();
     InputStream testFile = TestFile.get(file);
     Problem problem = parser.parse(testFile);
-    Algorithm algorithm = new Algorithm(problem, new HashSet<Graph>());
+    Algorithm algorithm = new Algorithm(problem, new HashMap<>());
     return algorithm.solve();
   }
 
@@ -22,6 +23,6 @@ public final class TestSolver {
     ProblemParser parser = new ProblemParser();
     InputStream testFile = TestFile.get(file);
     Problem problem = parser.parse(testFile);
-    return new Algorithm(problem, new HashSet<Graph>());
+    return new Algorithm(problem, new HashMap<>());
   }
 }
