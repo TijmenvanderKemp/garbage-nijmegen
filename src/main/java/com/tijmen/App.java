@@ -1,6 +1,9 @@
 package com.tijmen;
 
+import com.tijmen.entities.Graph;
 import com.tijmen.entities.Problem;
+
+import java.util.HashSet;
 
 public final class App
 {
@@ -11,7 +14,7 @@ public final class App
     {
         ProblemParser parser = new ProblemParser();
         Problem problem = parser.parse(System.in);
-        Algorithm algorithm = new Algorithm(problem);
+        Algorithm algorithm = new Algorithm(problem, new HashSet<Graph>());
         System.out.println(algorithm.solve());
     }
 }

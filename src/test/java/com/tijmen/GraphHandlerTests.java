@@ -1,10 +1,11 @@
 package com.tijmen;
 
-import com.tijmen.entities.*;
-import org.assertj.core.api.Assertions;
+import com.tijmen.entities.Edge;
+import com.tijmen.entities.Graph;
+import com.tijmen.entities.GraphHandler;
+import com.tijmen.entities.Vertex;
 import org.junit.Test;
 
-import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class GraphHandlerTests {
         graph1.buildAdjacencyLists();
         Graph graph2 = new Graph(2);
         graph1.addEdge(1,2);
-        Set<Vertex> vertex3 = new HashSet<Vertex>();
+        Set<Vertex> vertex3 = new HashSet<>();
         vertex3.add(new Vertex(3));
         assertThat(GraphHandler.removeVerticesFromGraph(graph1, vertex3).equals(graph2));
     }

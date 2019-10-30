@@ -67,6 +67,17 @@ public class Graph {
         return edges.size();
     }
 
+    public int getGrade(Vertex v) {
+        return adjacencyLists.get(v).size();
+    }
+
+    public Vertex getVertexWithMinimalGrade() {
+        return adjacencyLists.entrySet().stream()
+                .min(Comparator.comparing(entry -> entry.getValue().size()))
+                .map(Map.Entry::getKey)
+                .orElseThrow(NullPointerException::new);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

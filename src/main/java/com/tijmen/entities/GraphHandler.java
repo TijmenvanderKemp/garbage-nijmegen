@@ -1,7 +1,8 @@
 package com.tijmen.entities;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class GraphHandler {
 
@@ -19,15 +20,6 @@ public class GraphHandler {
             }
         }
         return edgesOfGrade;
-    }
-
-    public static List<Vertex> verticesSortedByGrade(Graph graph) {
-        List<Vertex> sortedList = new LinkedList<>();
-        //TODO: it seems to me like this could be done with a comparator or something?
-        for(int i = 0; i < 5; i++) {
-            sortedList.addAll(new LinkedList<>(verticesOfGrade(graph, i)));
-        }
-        return sortedList;
     }
 
     /**
@@ -71,23 +63,6 @@ public class GraphHandler {
             }
         }
         return edgesFromOrToVertex;
-    }
-
-    /**
-     * Finds the set of direct neighbours a vertex in a graph
-     * @param graph the graph
-     * @param vertex The vertex to find neighbours of
-     * @return the set of direct neighbours a vertex in a graph
-     */
-    public static Set<Vertex> VerticesDirectlyConnectedToVertex(Graph graph, Vertex vertex) {
-        Set<Vertex> vertices = new HashSet<>();
-        Set<Edge> edges = edgesFromOrToVertex(graph.getEdges(), vertex);
-        for(Edge edge : edges){
-            // We already know these are the edges this vertex is in so we dont need to check isEmpty()
-            // TODO: maybe immediately for loop over all edges is faster and then simply check for isPresent first?
-            vertices.add(edge.getOtherVertex(vertex).get());
-        }
-        return vertices;
     }
 
 }
