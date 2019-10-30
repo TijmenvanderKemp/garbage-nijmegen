@@ -1,9 +1,7 @@
 package com.tijmen.entities;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.OptionalDouble;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GraphHandler {
 
@@ -21,6 +19,14 @@ public class GraphHandler {
             }
         }
         return edgesOfGrade;
+    }
+
+    public static List<Vertex> verticesSortedByGrade(Graph graph) {
+        List<Vertex> sortedList = new LinkedList<>();
+        for(int i = 2; i < 5; i++) {
+            sortedList.addAll(verticesOfGrade(graph, i).stream().collect(Collectors.toList()));
+        }
+        return sortedList;
     }
 
     /**
@@ -41,6 +47,12 @@ public class GraphHandler {
         }
 
         return new Graph(verticesLeftOver, edgesLeftOver);
+    }
+
+    public static Graph removeVerticesFromGraph(Graph graph, Vertex vertex) {
+        Set<Vertex> vertices = new HashSet<>();
+        vertices.add(vertex);
+        return removeVerticesFromGraph(graph, vertices);
     }
 
     /**

@@ -37,6 +37,9 @@ public class Algorithm {
       return true;
     }
 
+    if(tryToFillTheRest(graph, numberOfBins)) {
+      return true;
+    }
 
     return false;
   }
@@ -45,7 +48,7 @@ public class Algorithm {
    * Creates a new graph with all vertices removed that have zero neighbours.
    * Reduces the number of bins by the amount of vertices removed.
    */
-  public int fillAllGradeZeroVertices() {
+  int fillAllGradeZeroVertices() {
     Set<Vertex> gradeZeroVertices = GraphHandler.verticesOfGrade(graph, 0);
     int numberRemoved = gradeZeroVertices.size();
     graph = GraphHandler.removeVerticesFromGraph(graph, gradeZeroVertices);
@@ -59,7 +62,6 @@ public class Algorithm {
    * Keeps doing this until no more vertices with grade 1 exist.
    */
   private void fillAsManyAsPossibleGradeOneVertices() {
-    // TODO Find why not all edges get removed correctly
     for(Optional<Vertex> gradeOneVertex = GraphHandler.verticesOfGrade(graph, 1).stream().findAny();
         gradeOneVertex.isPresent() && numberOfBins>0;
         // each time update which vertex to remove
@@ -84,7 +86,7 @@ public class Algorithm {
    * If the number of bins k is less than or equal to the number of vertices |V|, divided by 5, rounded up,
    * then it's automatically possible to place all bins.
    */
-  public boolean testVertexLowerBound() {
+  boolean testVertexLowerBound() {
     return numberOfBins <= Math.ceil(graph.numberOfVertices() / 5.0);
   }
 
@@ -95,9 +97,42 @@ public class Algorithm {
    * We see that for a bidirectional graph the average grade d is d = |E|/|V|
    * We save our edges only once in memory so 2E
    */
-  public boolean testAverageGradeLowerBound() {
+  boolean testAverageGradeLowerBound() {
     int E = graph.numberOfEdges();
     int V = graph.numberOfVertices();
     return numberOfBins <= V / (E*2.0/V + 1);
+  }
+
+  public boolean tryToFillTheRest(Graph graph, int numberOfBins) {
+    // if(numberOfBins > 15) System.out.println(numberOfBins); // See depth
+    if(numberOfBins == 0) {
+      return true;
+    }
+
+    Set<Vertex> vertices = graph.getVertices();
+    if(vertices.isEmpty()) {
+      return false;
+    }
+    Vertex vertex = GraphHandler.verticesSortedByGrade(graph).get(0);
+
+    Set<Vertex> neighbours = GraphHandler.VerticesDirectlyConnectedToVertex(graph, vertex);
+    Set<Vertex> removedVertices = new HashSet<>(neighbours);
+    removedVertices.add(vertex);
+
+    if(tryToFillTheRest(GraphHandler.removeVerticesFromGraph(graph, removedVertices), numberOfBins - 1)) {
+      return true;
+    }
+
+    //TODO: Sort neighbours by grade.
+    for(Vertex neighbour : neighbours) {
+      Set<Vertex> removedVerticesNeighbour = GraphHandler.VerticesDirectlyConnectedToVertex(graph, neighbour);
+      removedVerticesNeighbour.add(neighbour);
+      if(tryToFillTheRest(GraphHandler.removeVerticesFromGraph(graph, removedVerticesNeighbour), numberOfBins - 1)) {
+        return true;
+      }
+    }
+
+    return false;
+
   }
 }

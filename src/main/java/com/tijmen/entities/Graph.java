@@ -27,8 +27,8 @@ public class Graph {
     }
 
     public void buildAdjacencyLists() {
-        for (int i = 1; i <= vertices.size(); i++) {
-            adjacencyLists.put(new Vertex(i), new HashSet<>());
+        for (Vertex vertex : vertices) {
+            adjacencyLists.put(vertex, new HashSet<>());
         }
         for(Edge edge : edges) {
             Vertex v1 = edge.getV1();
@@ -73,5 +73,10 @@ public class Graph {
         if (o == null || getClass() != o.getClass()) return false;
         Graph graph = (Graph) o;
         return vertices.equals(graph.getVertices()) && edges.equals(graph.getEdges());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(vertices, edges);
     }
 }
