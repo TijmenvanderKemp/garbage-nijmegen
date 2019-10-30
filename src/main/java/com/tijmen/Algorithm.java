@@ -37,7 +37,7 @@ class Algorithm {
     if (numberOfBins == 0) {
       return true;
     }
-
+    //TODO: check for each of these above each time? (Make solve recursive?)
     return tryToFillTheRest(graph, numberOfBins);
   }
 
@@ -112,6 +112,7 @@ class Algorithm {
       return false;
     }
 
+    // If we encountered this sub graph before, its not possible.
     if(subGraphs.contains(graph)) {
       return false;
     }
@@ -129,7 +130,7 @@ class Algorithm {
       subGraphs.add(subGraph);
     }
 
-    //TODO: Sort neighbours by grade.
+    //TODO: Sort neighbours by grade. vertex can then be also added to this loop for less duplicate code.
     for(Vertex neighbour : neighbours) {
       Set<Vertex> removedVerticesNeighbour = GraphHandler.VerticesDirectlyConnectedToVertex(graph, neighbour);
       removedVerticesNeighbour.add(neighbour);

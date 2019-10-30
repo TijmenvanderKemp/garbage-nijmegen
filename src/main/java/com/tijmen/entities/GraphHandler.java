@@ -23,6 +23,7 @@ public class GraphHandler {
 
     public static List<Vertex> verticesSortedByGrade(Graph graph) {
         List<Vertex> sortedList = new LinkedList<>();
+        //TODO: it seems to me like this could be done with a comparator or something?
         for(int i = 0; i < 5; i++) {
             sortedList.addAll(new LinkedList<>(verticesOfGrade(graph, i)));
         }
@@ -40,6 +41,7 @@ public class GraphHandler {
         Set<Vertex> verticesLeftOver = SetHandler.subtractSets(graph.getVertices(), vertices);
 
         // each edge that contains one of the removed vertices is removed as well
+        // TODO: Something simpler with collectors?
         Set<Edge> edgesLeftOver = graph.getEdges();
         for(Vertex vertex : vertices) {
             Set<Edge> edgesFromOrToVertex = edgesFromOrToVertex(edgesLeftOver, vertex);
@@ -82,6 +84,7 @@ public class GraphHandler {
         Set<Edge> edges = edgesFromOrToVertex(graph.getEdges(), vertex);
         for(Edge edge : edges){
             // We already know these are the edges this vertex is in so we dont need to check isEmpty()
+            // TODO: maybe immediately for loop over all edges is faster and then simply check for isPresent first?
             vertices.add(edge.getOtherVertex(vertex).get());
         }
         return vertices;
