@@ -23,8 +23,8 @@ public class GraphHandler {
 
     public static List<Vertex> verticesSortedByGrade(Graph graph) {
         List<Vertex> sortedList = new LinkedList<>();
-        for(int i = 2; i < 5; i++) {
-            sortedList.addAll(verticesOfGrade(graph, i).stream().collect(Collectors.toList()));
+        for(int i = 0; i < 5; i++) {
+            sortedList.addAll(new LinkedList<>(verticesOfGrade(graph, i)));
         }
         return sortedList;
     }
@@ -81,6 +81,7 @@ public class GraphHandler {
         Set<Vertex> vertices = new HashSet<>();
         Set<Edge> edges = edgesFromOrToVertex(graph.getEdges(), vertex);
         for(Edge edge : edges){
+            // We already know these are the edges this vertex is in so we dont need to check isEmpty()
             vertices.add(edge.getOtherVertex(vertex).get());
         }
         return vertices;

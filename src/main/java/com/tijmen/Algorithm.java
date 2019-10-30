@@ -8,16 +8,17 @@ import java.util.OptionalDouble;
 import java.util.Set;
 import java.util.stream.DoubleStream;
 
-public class Algorithm {
+class Algorithm {
   private int numberOfBins;
   private Graph graph;
+  private HashSet<Graph> subGraphs = new HashSet<>();
 
-  public Algorithm(Problem problem) {
+  Algorithm(Problem problem) {
     numberOfBins = problem.getNumberOfBins();
     graph = problem.getGraph();
   }
 
-  public boolean solve() {
+  boolean solve() {
 
     if (testVertexLowerBound()) {
       return true;
@@ -37,11 +38,7 @@ public class Algorithm {
       return true;
     }
 
-    if(tryToFillTheRest(graph, numberOfBins)) {
-      return true;
-    }
-
-    return false;
+    return tryToFillTheRest(graph, numberOfBins);
   }
 
   /**
@@ -103,33 +100,46 @@ public class Algorithm {
     return numberOfBins <= V / (E*2.0/V + 1);
   }
 
-  public boolean tryToFillTheRest(Graph graph, int numberOfBins) {
+  private boolean tryToFillTheRest(Graph graph, int numberOfBins) {
     // if(numberOfBins > 15) System.out.println(numberOfBins); // See depth
     if(numberOfBins == 0) {
       return true;
     }
 
+    // If there is no more space left, its not possible
     Set<Vertex> vertices = graph.getVertices();
     if(vertices.isEmpty()) {
       return false;
     }
+
+    if(subGraphs.contains(graph)) {
+      return false;
+    }
+
     Vertex vertex = GraphHandler.verticesSortedByGrade(graph).get(0);
 
     Set<Vertex> neighbours = GraphHandler.VerticesDirectlyConnectedToVertex(graph, vertex);
     Set<Vertex> removedVertices = new HashSet<>(neighbours);
     removedVertices.add(vertex);
 
-    if(tryToFillTheRest(GraphHandler.removeVerticesFromGraph(graph, removedVertices), numberOfBins - 1)) {
+    Graph subGraph = GraphHandler.removeVerticesFromGraph(graph, removedVertices);
+    if(tryToFillTheRest(subGraph, numberOfBins - 1)) {
       return true;
+    } else {
+      subGraphs.add(subGraph);
     }
 
     //TODO: Sort neighbours by grade.
     for(Vertex neighbour : neighbours) {
       Set<Vertex> removedVerticesNeighbour = GraphHandler.VerticesDirectlyConnectedToVertex(graph, neighbour);
       removedVerticesNeighbour.add(neighbour);
-      if(tryToFillTheRest(GraphHandler.removeVerticesFromGraph(graph, removedVerticesNeighbour), numberOfBins - 1)) {
+      subGraph = GraphHandler.removeVerticesFromGraph(graph, removedVerticesNeighbour);
+      if(tryToFillTheRest(subGraph, numberOfBins - 1)) {
         return true;
+      } else {
+        subGraphs.add(subGraph);
       }
+
     }
 
     return false;
