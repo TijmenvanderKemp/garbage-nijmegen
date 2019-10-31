@@ -20,38 +20,39 @@ class Algorithm {
 
     boolean solve() {
 
-        if (numberOfBins <= 0) {
+        if (simplyPossible()) {
             return true;
         }
-        // If there is no more space left, its not possible
-        if (graph.getVertices().isEmpty()) {
+        if (simplyImpossible()) {
             return false;
         }
-
-        if (testVertexLowerBound()) {
-            return true;
-        }
-        if (testAverageGradeLowerBound()) {
-            return true;
-        }
-
-        // If we encountered this sub graph before, its not possible.
-        if (HasBeenChecked()) return false;
 
         // Every vertex with 0 edges can support a bin.
         fillAllGradeZeroVertices();
-        if (numberOfBins <= 0) {
+        if (simplyPossible()) {
             return true;
         }
-        // Each time we encounter a vertex of grade 1 we see it is never disadvantageous to fill it.
-        fillAsManyAsPossibleGradeOneVertices();
-        if (numberOfBins <= 0) {
-            return true;
-        }
-        if (graph.getVertices().isEmpty()) {
+        if (simplyImpossible()) {
             return false;
         }
-        if (HasBeenChecked()) return false;
+
+        // Each time we encounter a vertex of grade 1 we see it is never disadvantageous to fill it.
+        fillAsManyAsPossibleGradeOneVertices();
+        if (simplyPossible()) {
+            return true;
+        }
+        if (simplyImpossible()) {
+            return false;
+        }
+
+        // Grade 0 vertices can be removed again
+        fillAllGradeZeroVertices();
+        if (simplyPossible()) {
+            return true;
+        }
+        if (simplyImpossible()) {
+            return false;
+        }
 
         Vertex vertex = graph.getVertexWithMinimalGrade();
 
@@ -76,12 +77,20 @@ class Algorithm {
 
     }
 
+    // Applies a few simple tests to see if the problem is possible
+    private boolean simplyPossible() {
+        return numberOfBins <= 0 || testVertexLowerBound() || testAverageGradeLowerBound();
+    }
+
+    // Applies a few simple tests to see if the problem is impossible
+    private boolean simplyImpossible() {
+        return graph.getVertices().isEmpty() || HasBeenChecked();
+    }
+
+    // If we encountered this sub graph before, its not possible.
     private boolean HasBeenChecked() {
-        // If we encountered this sub graph before, its not possible.
         if (subGraphs.containsKey(graph)) {
-            if (numberOfBins >= subGraphs.get(graph)) {
-                return true;
-            }
+            return numberOfBins >= subGraphs.get(graph);
         }
         return false;
     }
@@ -91,7 +100,7 @@ class Algorithm {
      * Reduces the number of bins by the amount of vertices removed.
      */
     int fillAllGradeZeroVertices() {
-        Set<Vertex> gradeZeroVertices = GraphHandler.verticesOfGrade(graph, 0);
+        Set<Vertex> gradeZeroVertices = graph.getVerticesWithGrade(0);
         int numberRemoved = gradeZeroVertices.size();
         graph = GraphHandler.removeVerticesFromGraph(graph, gradeZeroVertices);
         numberOfBins -= numberRemoved;
@@ -104,10 +113,10 @@ class Algorithm {
      * Keeps doing this until no more vertices with grade 1 exist.
      */
     private void fillAsManyAsPossibleGradeOneVertices() {
-        for (Optional<Vertex> gradeOneVertex = GraphHandler.verticesOfGrade(graph, 1).stream().findAny();
+        for (Optional<Vertex> gradeOneVertex = graph.getVertexWithGrade(1);
              gradeOneVertex.isPresent() && numberOfBins > 0;
             // each time update which vertex to remove
-             gradeOneVertex = GraphHandler.verticesOfGrade(graph, 1).stream().findAny()) {
+             gradeOneVertex = graph.getVertexWithGrade(1)) {
             numberOfBins--;
             Set<Vertex> removedVertices = new HashSet<>();
             // We will remove both the vertex of grade one and its neighbour.
@@ -142,9 +151,5 @@ class Algorithm {
         int E = graph.numberOfEdges();
         int V = graph.numberOfVertices();
         return numberOfBins <= V / (E * 2.0 / V + 1);
-    }
-
-    public HashMap<Graph, Integer> getSubGraphs() {
-        return subGraphs;
     }
 }

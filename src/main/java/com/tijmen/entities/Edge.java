@@ -20,16 +20,6 @@ public class Edge {
         return v2;
     }
 
-    public Optional<Vertex> getOtherVertex(Vertex v) {
-        if(v.equals(v1)){
-            return Optional.of(v2);
-        } else if(v.equals(v2)){
-            return Optional.of(v1);
-        } else {
-            return Optional.empty();
-        }
-    }
-
     public boolean connectedTo(Vertex vertex) {
         return vertex.equals(v1) || vertex.equals(v2);
     }

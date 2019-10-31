@@ -15,10 +15,4 @@ public class SetHandler {
     public static <T> Set<T> subtractSets(Set<T> set1, Set<T> set2) {
         return set1.stream().filter(element -> !set2.contains(element)).collect(Collectors.toSet());
     }
-
-    public static <T> void addAll(Set<T> setToAddTo, Set<T> setToAddFrom) {
-        for(T e: setToAddFrom) {
-            setToAddTo.add(e);
-        }
-    }
 }

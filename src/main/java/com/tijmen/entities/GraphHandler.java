@@ -7,22 +7,6 @@ import java.util.Set;
 public class GraphHandler {
 
     /**
-     *
-     * @param graph the graph
-     * @param grade the requested grade
-     * @return all vertices that have grade of requested grade
-     */
-    public static Set<Vertex> verticesOfGrade(Graph graph, int grade) {
-        Set<Vertex> edgesOfGrade = new HashSet<>();
-        for(Map.Entry<Vertex, Set<Vertex>> adjacencyList : graph.getAdjacencyLists().entrySet()) {
-            if(adjacencyList.getValue().size() == grade) {
-                edgesOfGrade.add(adjacencyList.getKey());
-            }
-        }
-        return edgesOfGrade;
-    }
-
-    /**
      * Removes all vertices and edges that contain those vertices from a graph
      * @param graph the original graph to remove vertices from
      * @param vertices the set of all vertices to remove
@@ -33,7 +17,6 @@ public class GraphHandler {
         Set<Vertex> verticesLeftOver = SetHandler.subtractSets(graph.getVertices(), vertices);
 
         // each edge that contains one of the removed vertices is removed as well
-        // TODO: Something simpler with collectors?
         Set<Edge> edgesLeftOver = graph.getEdges();
         for(Vertex vertex : vertices) {
             Set<Edge> edgesFromOrToVertex = edgesFromOrToVertex(edgesLeftOver, vertex);
@@ -41,12 +24,6 @@ public class GraphHandler {
         }
 
         return new Graph(verticesLeftOver, edgesLeftOver);
-    }
-
-    public static Graph removeVerticesFromGraph(Graph graph, Vertex vertex) {
-        Set<Vertex> vertices = new HashSet<>();
-        vertices.add(vertex);
-        return removeVerticesFromGraph(graph, vertices);
     }
 
     /**

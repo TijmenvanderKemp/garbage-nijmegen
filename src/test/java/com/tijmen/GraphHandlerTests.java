@@ -12,19 +12,6 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GraphHandlerTests {
-    @Test
-    public void verticesOfGradeTest() {
-        Graph graph = new Graph(3);
-        graph.addEdge(1,2);
-        Set<Vertex> verticesOfGrade0 = new HashSet<>();
-        Set<Vertex> verticesOfGrade1 = new HashSet<>();
-        verticesOfGrade1.add(new Vertex(1));
-        verticesOfGrade1.add(new Vertex(2));
-        verticesOfGrade0.add(new Vertex(3));
-        assertThat(GraphHandler.verticesOfGrade(graph,0).equals(verticesOfGrade0));
-        assertThat(GraphHandler.verticesOfGrade(graph, 1).equals(verticesOfGrade1));
-        assertThat(GraphHandler.verticesOfGrade(graph, 2).equals(new HashSet<>()));
-    }
 
     @Test
     public void removeVerticesFromGraphTest() {

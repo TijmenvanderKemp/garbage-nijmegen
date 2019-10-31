@@ -1,6 +1,7 @@
 package com.tijmen.entities;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Graph {
     private final Set<Vertex> vertices;
@@ -80,6 +81,18 @@ public class Graph {
                 .min(Comparator.comparing(entry -> entry.getValue().size()))
                 .map(Map.Entry::getKey)
                 .orElseThrow(NullPointerException::new);
+    }
+
+    public Optional<Vertex> getVertexWithGrade(int grade) {
+        return getVerticesWithGrade(grade)
+                .stream()
+                .findAny();
+    }
+
+    public Set<Vertex> getVerticesWithGrade(int grade) {
+        return adjacencyLists.entrySet().stream()
+                .filter(entry -> entry.getValue().size() == grade)
+                .map(Map.Entry::getKey).collect(Collectors.toSet());
     }
 
     @Override
