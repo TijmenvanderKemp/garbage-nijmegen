@@ -5,7 +5,10 @@ import com.tijmen.entities.GraphHandler;
 import com.tijmen.entities.Problem;
 import com.tijmen.entities.Vertex;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.Set;
 
 class Algorithm {
     private int numberOfBins;
@@ -24,15 +27,17 @@ class Algorithm {
             return true;
         }
         if (simplyImpossible()) {
+            impossibleProblems.put(graph, numberOfBins);
             return false;
         }
 
         // Every vertex with 0 edges can support a bin.
-        int numberOfRemovedVertices = fillAllGradeZeroVertices();
+        fillAllGradeZeroVertices();
         if (simplyPossible()) {
             return true;
         }
         if (simplyImpossible()) {
+            impossibleProblems.put(graph, numberOfBins);
             return false;
         }
 
@@ -42,6 +47,7 @@ class Algorithm {
             return true;
         }
         if (simplyImpossible()) {
+            impossibleProblems.put(graph, numberOfBins);
             return false;
         }
 
@@ -51,30 +57,39 @@ class Algorithm {
             return true;
         }
         if (simplyImpossible()) {
+            impossibleProblems.put(graph, numberOfBins);
             return false;
         }
 
-        Vertex vertex = graph.getVertexWithMinimalGrade();
+        return tryToPlaceABinOnGradeTwoOrMoreVertex();
+    }
 
-        List<Vertex> neighbours = new ArrayList<>(graph.getAdjacencyLists().get(vertex));
-        neighbours.add(vertex);
-        neighbours.sort(Comparator.comparing(graph::getGrade));
+    private boolean tryToPlaceABinOnGradeTwoOrMoreVertex() {
+        // If there is a solution, there must be a solution with one of these filled.
+        return getVertexWithLowestGradeAndItsNeighbours().stream()
+                .sorted(Comparator.comparing(graph::getGrade))
+                .map(graph::getVertexAndNeighbours)
+                .map(vertexAndNeighbours -> GraphHandler.removeVerticesFromGraph(graph, vertexAndNeighbours))
+                .anyMatch(this::tryToSolveSubproblem);
+    }
 
-        for (Vertex neighbour : neighbours) {
-            Set<Vertex> removedVerticesNeighbour = new HashSet<>(graph.getAdjacencyLists().get(neighbour));
-            removedVerticesNeighbour.add(neighbour);
-            Graph subGraph = GraphHandler.removeVerticesFromGraph(graph, removedVerticesNeighbour);
-            Algorithm algorithm = new Algorithm(new Problem(subGraph, numberOfBins - 1), impossibleProblems);
-            if (algorithm.solve()) {
-                return true;
-            } else {
-                impossibleProblems.put(subGraph, numberOfBins - 1);
-            }
-
+    /**
+     * Try to solve the subproblem. We're making a new Algorithm to avoid modifying the state of the current solve.
+     * We do pass along the impossibleProblems so we can keep track of all solutions that didn't work out.
+     */
+    private boolean tryToSolveSubproblem(Graph subGraph) {
+        Algorithm algorithm = new Algorithm(new Problem(subGraph, numberOfBins - 1), impossibleProblems);
+        if (algorithm.solve()) {
+            return true;
+        } else {
+            impossibleProblems.put(subGraph, numberOfBins - 1);
+            return false;
         }
+    }
 
-        return false;
-
+    private Set<Vertex> getVertexWithLowestGradeAndItsNeighbours() {
+        Vertex vertex = graph.getVertexWithMinimalGrade();
+        return graph.getVertexAndNeighbours(vertex);
     }
 
     // Applies a few simple tests to see if the problem is possible
@@ -123,17 +138,8 @@ class Algorithm {
 
     private void removeGradeOneVertexAndItsNeighbour(Vertex gradeOne) {
         numberOfBins--;
-        Set<Vertex> verticesToRemove = Set.of(gradeOne, getNeighbourOfGradeOneVertex(gradeOne));
+        Set<Vertex> verticesToRemove = graph.getVertexAndNeighbours(gradeOne);
         graph = GraphHandler.removeVerticesFromGraph(graph, verticesToRemove);
-    }
-
-    private Vertex getNeighbourOfGradeOneVertex(Vertex gradeOne) {
-        // For the neighbour we don't check for isPresent because we know the vertex is of grade 1.
-        //noinspection OptionalGetWithoutIsPresent
-        return graph.getAdjacencyLists().get(gradeOne)
-                .stream()
-                .findAny()
-                .get();
     }
 
     /**

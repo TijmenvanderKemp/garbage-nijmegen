@@ -95,6 +95,13 @@ public class Graph {
                 .map(Map.Entry::getKey).collect(Collectors.toSet());
     }
 
+    public Set<Vertex> getVertexAndNeighbours(Vertex v) {
+        Set<Vertex> vertexAndNeighbours = new HashSet<>();
+        vertexAndNeighbours.add(v);
+        vertexAndNeighbours.addAll(adjacencyLists.get(v));
+        return vertexAndNeighbours;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
