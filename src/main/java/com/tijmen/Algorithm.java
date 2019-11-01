@@ -99,11 +99,11 @@ class Algorithm {
 
     // Applies a few simple tests to see if the problem is impossible
     private boolean simplyImpossible() {
-        return graph.getVertices().isEmpty() || hasBeenChecked();
+        return graph.isEmpty() || hasBeenCheckedBefore();
     }
 
     // If we encountered this sub graph before, its not possible.
-    private boolean hasBeenChecked() {
+    private boolean hasBeenCheckedBefore() {
         if (impossibleProblems.containsKey(graph)) {
             return numberOfBins >= impossibleProblems.get(graph);
         }

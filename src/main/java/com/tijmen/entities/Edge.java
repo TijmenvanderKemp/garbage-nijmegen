@@ -27,19 +27,13 @@ public class Edge {
         return v2;
     }
 
-    public boolean connectedTo(Vertex vertex) {
-        return vertex.equals(v1) || vertex.equals(v2);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Edge edge = (Edge) o;
-        return (v1.equals(edge.getV1()) &&
-                v2.equals(edge.getV2())) ||
-                (v1.equals(edge.getV2()) &&
-                        v2.equals(edge.getV1())) ;
+        return (v1.equals(edge.getV1()) && v2.equals(edge.getV2()))
+                || (v1.equals(edge.getV2()) && v2.equals(edge.getV1()));
     }
 
     @Override
@@ -49,7 +43,7 @@ public class Edge {
 
     @Override
     public String toString() {
-        return  "(" + v1 +
+        return "(" + v1 +
                 ", " + v2 +
                 ')';
     }

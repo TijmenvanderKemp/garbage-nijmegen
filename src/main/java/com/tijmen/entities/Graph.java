@@ -122,4 +122,8 @@ public class Graph {
                 ", \nedges=" + edges +
                 '}';
     }
+
+    public boolean isEmpty() {
+        return vertices.isEmpty();
+    }
 }
