@@ -1,8 +1,7 @@
 package com.tijmen.entities;
 
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GraphHandler {
 
@@ -19,7 +18,7 @@ public class GraphHandler {
         // each edge that contains one of the removed vertices is removed as well
         Set<Edge> edgesLeftOver = graph.getEdges();
         for(Vertex vertex : vertices) {
-            Set<Edge> edgesFromOrToVertex = edgesFromOrToVertex(edgesLeftOver, vertex);
+            Set<Edge> edgesFromOrToVertex = edgesFromOrToVertex(graph, vertex);
             edgesLeftOver = SetHandler.subtractSets(edgesLeftOver, edgesFromOrToVertex);
         }
 
@@ -28,18 +27,15 @@ public class GraphHandler {
 
     /**
      * Finds the set of edges that are to or from vertex
-     * @param edges The list of edges in the graph
+     * @param graph
      * @param vertex The vertex to check
      * @return the set of edges that are to or from vertex
      */
-    public static Set<Edge> edgesFromOrToVertex(Set<Edge> edges, Vertex vertex) {
-        Set<Edge> edgesFromOrToVertex = new HashSet<>();
-        for(Edge edge : edges) {
-            if(edge.connectedTo(vertex)) {
-                edgesFromOrToVertex.add(edge);
-            }
-        }
-        return edgesFromOrToVertex;
+    public static Set<Edge> edgesFromOrToVertex(Graph graph, Vertex vertex) {
+        Set<Vertex> neighbours = graph.getAdjacencyLists().get(vertex);
+        return neighbours.stream()
+                .map(neighbour -> new Edge(vertex, neighbour))
+                .collect(Collectors.toSet());
     }
 
 }

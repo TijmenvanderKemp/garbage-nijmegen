@@ -61,7 +61,7 @@ public class Graph {
     }
 
     public Map<Vertex, Set<Vertex>> getAdjacencyLists() {
-        return adjacencyLists;
+        return Collections.unmodifiableMap(adjacencyLists);
     }
 
     public int numberOfVertices() {
@@ -83,7 +83,7 @@ public class Graph {
                 .orElseThrow(NullPointerException::new);
     }
 
-    public Optional<Vertex> getVertexWithGrade(int grade) {
+    public Optional<Vertex> findVertexWithGrade(int grade) {
         return getVerticesWithGrade(grade)
                 .stream()
                 .findAny();

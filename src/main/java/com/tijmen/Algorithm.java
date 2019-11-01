@@ -10,12 +10,12 @@ import java.util.*;
 class Algorithm {
     private int numberOfBins;
     private Graph graph;
-    private HashMap<Graph, Integer> subGraphs;
+    private HashMap<Graph, Integer> impossibleProblems;
 
-    Algorithm(Problem problem, HashMap<Graph, Integer> subGraphs) {
+    Algorithm(Problem problem, HashMap<Graph, Integer> impossibleProblems) {
         numberOfBins = problem.getNumberOfBins();
         graph = problem.getGraph();
-        this.subGraphs = subGraphs;
+        this.impossibleProblems = impossibleProblems;
     }
 
     boolean solve() {
@@ -28,7 +28,7 @@ class Algorithm {
         }
 
         // Every vertex with 0 edges can support a bin.
-        fillAllGradeZeroVertices();
+        int numberOfRemovedVertices = fillAllGradeZeroVertices();
         if (simplyPossible()) {
             return true;
         }
@@ -61,14 +61,14 @@ class Algorithm {
         neighbours.sort(Comparator.comparing(graph::getGrade));
 
         for (Vertex neighbour : neighbours) {
-            Set<Vertex> removedVerticesNeighbour = graph.getAdjacencyLists().get(neighbour);
+            Set<Vertex> removedVerticesNeighbour = new HashSet<>(graph.getAdjacencyLists().get(neighbour));
             removedVerticesNeighbour.add(neighbour);
             Graph subGraph = GraphHandler.removeVerticesFromGraph(graph, removedVerticesNeighbour);
-            Algorithm algorithm = new Algorithm(new Problem(subGraph, numberOfBins - 1), subGraphs);
+            Algorithm algorithm = new Algorithm(new Problem(subGraph, numberOfBins - 1), impossibleProblems);
             if (algorithm.solve()) {
                 return true;
             } else {
-                subGraphs.put(subGraph, numberOfBins-1);
+                impossibleProblems.put(subGraph, numberOfBins - 1);
             }
 
         }
@@ -84,13 +84,13 @@ class Algorithm {
 
     // Applies a few simple tests to see if the problem is impossible
     private boolean simplyImpossible() {
-        return graph.getVertices().isEmpty() || HasBeenChecked();
+        return graph.getVertices().isEmpty() || hasBeenChecked();
     }
 
     // If we encountered this sub graph before, its not possible.
-    private boolean HasBeenChecked() {
-        if (subGraphs.containsKey(graph)) {
-            return numberOfBins >= subGraphs.get(graph);
+    private boolean hasBeenChecked() {
+        if (impossibleProblems.containsKey(graph)) {
+            return numberOfBins >= impossibleProblems.get(graph);
         }
         return false;
     }
@@ -113,23 +113,27 @@ class Algorithm {
      * Keeps doing this until no more vertices with grade 1 exist.
      */
     private void fillAsManyAsPossibleGradeOneVertices() {
-        for (Optional<Vertex> gradeOneVertex = graph.getVertexWithGrade(1);
-             gradeOneVertex.isPresent() && numberOfBins > 0;
-            // each time update which vertex to remove
-             gradeOneVertex = graph.getVertexWithGrade(1)) {
-            numberOfBins--;
-            Set<Vertex> removedVertices = new HashSet<>();
-            // We will remove both the vertex of grade one and its neighbour.
-            removedVertices.add(gradeOneVertex.get());
-            // For the neighbour we don't check for isPresent because we know the vertex is of grade 1.
-            removedVertices.add(graph.getAdjacencyLists().get(gradeOneVertex.get())
-                    .stream()
-                    .findAny()
-                    .get());
-
-            // actually remove the vertices
-            graph = GraphHandler.removeVerticesFromGraph(graph, removedVertices);
+        // each time update which vertex to remove
+        Optional<Vertex> gradeOneVertex = graph.findVertexWithGrade(1);
+        while (gradeOneVertex.isPresent() && numberOfBins > 0) {
+            removeGradeOneVertexAndItsNeighbour(gradeOneVertex.get());
+            gradeOneVertex = graph.findVertexWithGrade(1);
         }
+    }
+
+    private void removeGradeOneVertexAndItsNeighbour(Vertex gradeOne) {
+        numberOfBins--;
+        Set<Vertex> verticesToRemove = Set.of(gradeOne, getNeighbourOfGradeOneVertex(gradeOne));
+        graph = GraphHandler.removeVerticesFromGraph(graph, verticesToRemove);
+    }
+
+    private Vertex getNeighbourOfGradeOneVertex(Vertex gradeOne) {
+        // For the neighbour we don't check for isPresent because we know the vertex is of grade 1.
+        //noinspection OptionalGetWithoutIsPresent
+        return graph.getAdjacencyLists().get(gradeOne)
+                .stream()
+                .findAny()
+                .get();
     }
 
     /**

@@ -2,7 +2,6 @@ package com.tijmen;
 
 import com.tijmen.entities.Pair;
 import com.tijmen.entities.Problem;
-import org.junit.ComparisonFailure;
 import org.junit.Test;
 
 import java.io.File;
@@ -32,14 +31,11 @@ public class AlgorithmTest {
     private void test(Pair<File, File> inAndOut) {
         try {
             System.out.println("Testing " + inAndOut.getLeft().getName());
-            Problem in = getProblem(inAndOut);
+            Problem problem = getProblem(inAndOut);
             String solution = getSolution(inAndOut);
-            testSolve(in, solution);
+            testSolve(problem, solution);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (ComparisonFailure comparisonFailure) {
-            System.out.println(inAndOut.getLeft().getName());
-            throw comparisonFailure;
         }
     }
 

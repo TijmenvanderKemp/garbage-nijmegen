@@ -1,15 +1,22 @@
 package com.tijmen.entities;
 
 import java.util.Objects;
-import java.util.Optional;
+import java.util.Set;
 
 public class Edge {
     private final Vertex v1;
     private final Vertex v2;
 
     public Edge(Vertex v1, Vertex v2) {
+        if (v1.equals(v2)) {
+            throw new IllegalStateException("Mogen niet hetzelfde zijn.");
+        }
         this.v1 = v1;
         this.v2 = v2;
+    }
+
+    public Edge(int v1, int v2) {
+        this(new Vertex(v1), new Vertex(v2));
     }
 
     public Vertex getV1() {
@@ -37,7 +44,7 @@ public class Edge {
 
     @Override
     public int hashCode() {
-        return Objects.hash(v1, v2);
+        return Objects.hash(Set.of(v1, v2));
     }
 
     @Override

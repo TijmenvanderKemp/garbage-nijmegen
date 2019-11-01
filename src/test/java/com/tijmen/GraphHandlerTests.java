@@ -19,41 +19,32 @@ public class GraphHandlerTests {
         graph1.addEdge(1,2);
         graph1.addEdge(2,3);
         graph1.buildAdjacencyLists();
+
         Graph graph2 = new Graph(2);
-        graph1.addEdge(1,2);
+        graph2.addEdge(1,2);
+
         Set<Vertex> vertex3 = new HashSet<>();
         vertex3.add(new Vertex(3));
+
         assertThat(GraphHandler.removeVerticesFromGraph(graph1, vertex3).equals(graph2));
     }
 
     @Test
     public void edgesFromOrToVertexTest() {
-        Set<Edge> edges = new HashSet<>();
-        Set<Edge> edges2 = new HashSet<>();
-        Vertex v1 = new Vertex(1);
-        Vertex v2 = new Vertex(2);
-        Vertex v3 = new Vertex(2);
-        edges.add(new Edge(v1,v2));
-        edges.add(new Edge(v2,v3));
-        edges2.add(new Edge(v1, v2));
-        assertThat(GraphHandler.edgesFromOrToVertex(edges, v1).equals(edges2));
-        assertThat(GraphHandler.edgesFromOrToVertex(edges, v2).equals(edges));
+        Graph graph = new Graph(3);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 3);
+        graph.buildAdjacencyLists();
+        assertThat(GraphHandler.edgesFromOrToVertex(graph, new Vertex(1))).containsExactly(new Edge(1, 2));
+        assertThat(GraphHandler.edgesFromOrToVertex(graph, new Vertex(2))).containsExactlyInAnyOrder(new Edge(1, 2), new Edge(2, 3));
     }
 
     @Test
     public void ActuallyEqual() {
-        Set<Edge> edges = new HashSet<>();
-        Set<Vertex> vertices = new HashSet<>();
-        Vertex v1 = new Vertex(1);
-        Vertex v2 = new Vertex(2);
-        Vertex v3 = new Vertex(2);
-        vertices.add(v1);
-        vertices.add(v2);
-        vertices.add(v3);
-        Edge e1 = new Edge(v1,v2);
-        Edge e2 = new Edge(v2,v3);
-        edges.add(e1);
-        edges.add(e2);
+        Set<Vertex> vertices = Set.of(new Vertex(1), new Vertex(2), new Vertex(3));
+        Edge e1 = new Edge(1, 2);
+        Edge e2 = new Edge(2, 3);
+        Set<Edge> edges = Set.of(e1, e2);
         Graph graph1 = new Graph(3);
         graph1.addEdge(e1);
         graph1.addEdge(e2);
@@ -65,21 +56,11 @@ public class GraphHandlerTests {
 
     @Test
     public void NotEqual() {
-        Set<Edge> edges = new HashSet<>();
-        Set<Vertex> vertices = new HashSet<>();
-        Vertex v1 = new Vertex(1);
-        Vertex v2 = new Vertex(2);
-        Vertex v3 = new Vertex(2);
-        vertices.add(v1);
-        vertices.add(v2);
-        vertices.add(v3);
-        Edge e1 = new Edge(v1,v2);
-        Edge e2 = new Edge(v2,v3);
-        edges.add(e1);
-        edges.add(e2);
-        Graph graph1 = new Graph(3);
-        graph1.addEdge(e1);
-        Graph graph2 = new Graph(vertices, edges);
+        Set<Vertex> vertices = Set.of(new Vertex(1), new Vertex(2), new Vertex(3));
+        Edge e1 = new Edge(1, 2);
+        Edge e2 = new Edge(2, 3);
+        Graph graph1 = new Graph(vertices, Set.of(e1));
+        Graph graph2 = new Graph(vertices, Set.of(e1, e2));
         assertThat(graph1.hashCode() != graph2.hashCode());
         assertThat(!graph1.equals(graph2));
         assertThat(!graph2.equals(graph1));
